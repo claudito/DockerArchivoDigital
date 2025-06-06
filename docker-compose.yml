@@ -8,10 +8,5 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html
-    environment:
-      DB_CONNECTION: sqlsrv
-      DB_HOST: tu-endpoint-rds.amazonaws.com
-      DB_PORT: 1433
-      DB_DATABASE: nombre_db
-      DB_USERNAME: usuario
-      DB_PASSWORD: clave
+    env_file:
+      - .env   # 👈 Esta línea usa tu archivo .env del proyecto
