@@ -12,16 +12,16 @@ RUN apt-get update && apt-get install -y \
     unixodbc-dev gcc g++ make autoconf \
     && apt-get clean
 
-# Agregar repositorio oficial de Microsoft para Ubuntu 22.04
+# Agregar repositorio oficial de Microsoft para Ubuntu 22.04 y herramientas ODBC
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools
 
-# Exportar mssql-tools al PATH (opcional, por si se quiere usar en consola)
+# Exportar mssql-tools al PATH
 ENV PATH="${PATH}:/opt/mssql-tools/bin"
 
-# Instalar extensiones PDO y SQLSRV de PHP
+# Instalar extensiones de PHP necesarias, incluyendo pdo_sqlsrv y sqlsrv
 RUN pecl install pdo_sqlsrv sqlsrv && \
     docker-php-ext-enable pdo_sqlsrv sqlsrv && \
     docker-php-ext-install pdo mbstring zip exif pcntl bcmath
@@ -29,23 +29,23 @@ RUN pecl install pdo_sqlsrv sqlsrv && \
 # Habilitar mod_rewrite para Laravel
 RUN a2enmod rewrite
 
-# Copiar archivo de configuración Apache para Laravel
+# Copiar archivo de configuración Apache personalizado (debe existir en tu proyecto)
 COPY laravel.conf /etc/apache2/sites-available/laravel.conf
 
-# Deshabilitar sitio default y habilitar nuestro site
+# Deshabilitar el sitio default y habilitar configuración personalizada
 RUN a2dissite 000-default.conf && a2ensite laravel.conf
 
-# Instalar Composer
+# Instalar Composer (copiado desde imagen oficial)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instalar Node.js (v18.x) y npm
+# Instalar Node.js 18 y npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
 # Establecer directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos del proyecto Laravel (o montar volumen)
+# Copiar archivos del proyecto Laravel (opcional si usas volumen)
 COPY . .
 
 # Instalar dependencias de Laravel e Inertia
@@ -55,4 +55,5 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
 # Asignar permisos adecuados
 RUN chown -R www-data:www-data /var/www/html
 
+# Exponer el puerto HTTP
 EXPOSE 80
