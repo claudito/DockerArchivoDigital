@@ -9,4 +9,4 @@ services:
     volumes:
       - .:/var/www/html
     env_file:
-      - .env   # 👈 Esta línea usa tu archivo .env del proyecto
+      - .env 
