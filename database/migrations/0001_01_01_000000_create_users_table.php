@@ -18,10 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('document_number',20);
             $table->string('password');
-            $table->integer('CodigoNivelEESSId')->nullable();
-            $table->foreign('CodigoNivelEESSId')->references('CodigoNivelEESSId')->on('TM_NivelEESS');
-            $table->string('CodigoProfesionalId',900)->nullable();
-            //$table->foreign('CodigoProfesionalId')->references('Id')->on('SEG_Usuario');
             $table->rememberToken();
             $table->timestamps();
         });
