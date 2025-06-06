@@ -45,7 +45,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 # Establecer directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos del proyecto Laravel (opcional si usas volumen)
+# Copiar archivos del proyecto Laravel (si no usas volumen)
 COPY . .
 
 # Instalar dependencias de Laravel e Inertia
@@ -55,5 +55,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
 # Asignar permisos adecuados
 RUN chown -R www-data:www-data /var/www/html
 
-# Exponer el puerto HTTP
 EXPOSE 80

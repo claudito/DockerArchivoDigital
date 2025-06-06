@@ -110,7 +110,7 @@ return [
             'prefix_indexes' => true,
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
-            'odbc_driver' => env('DB_ODBC_DRIVER', 'ODBC Driver 18 for SQL Server')
+            'odbc_driver' => 'ODBC Driver 18 for SQL Server'
         ],
 
         'sihce' => [
