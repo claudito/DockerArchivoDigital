@@ -29,6 +29,12 @@ RUN pecl install pdo_sqlsrv sqlsrv && \
 # Habilitar mod_rewrite para Laravel
 RUN a2enmod rewrite
 
+# Copiar archivo de configuración Apache para Laravel
+COPY laravel.conf /etc/apache2/sites-available/laravel.conf
+
+# Deshabilitar sitio default y habilitar nuestro site
+RUN a2dissite 000-default.conf && a2ensite laravel.conf
+
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
