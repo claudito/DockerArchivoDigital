@@ -11,8 +11,3 @@ Artisan::command('inspire', function () {
 */
 
 
-//Tareas programadas
-Schedule::command('app:procesar-seguimiento-vigilancia-epi')->everyThreeMinutes();
-//Schedule::command('app:procesar-seguimiento-vigilancia-epi')->everyMinute();
-
-Schedule::command('app:notificar-seguimiento-vigilancia-epi')->everyMinute();
