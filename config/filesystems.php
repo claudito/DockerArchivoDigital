@@ -69,6 +69,16 @@ return [
             'url' => env('MIN_IO_URL'),
             'endpoint' => env('MIN_IO_ENDPOINT'),
             'use_path_style_endpoint' => filter_var(env('MIN_IO_USE_PATH_STYLE_ENDPOINT', true), FILTER_VALIDATE_BOOLEAN),
+        ],
+        'minio_temp' => [
+            'driver' => 's3',
+            'key' => env('MIN_IO_ACCESS_KEY_ID'),
+            'secret' => env('MIN_IO_SECRET_ACCESS_KEY'),
+            'region' => env('MIN_IO_DEFAULT_REGION'),
+            'bucket' => env('MIN_IO_BUCKET_TEMP'),
+            'url' => env('MIN_IO_URL'),
+            'endpoint' => env('MIN_IO_ENDPOINT'),
+            'use_path_style_endpoint' => filter_var(env('MIN_IO_USE_PATH_STYLE_ENDPOINT', true), FILTER_VALIDATE_BOOLEAN),
         ]
 
     ],

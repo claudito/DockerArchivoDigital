@@ -99,6 +99,85 @@ class DigitalFileController extends Controller implements HasMiddleware
         }
     }
 
+    function createTemp(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(), [
+                //'archivo' => 'required|mimes:pdf,xlsx,xls,doc,docx,jpg,jpeg,png,gif,json|max:15360',
+                'archivo' => 'required|file|max:15360',
+                'folder' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                DB::commit();
+                return response()->json([
+                    'error' => 1,
+                    'message' => 'Error de validación',
+                    'data' => $validator->errors()
+                ], 422);
+            }
+
+            $user = auth('api')->user();
+
+            //Regigtro de archivo en Bucket
+            $folder = $request->folder;
+            $file = $request->file('archivo');
+            $name = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $fileSize = $file->getSize();
+            $fileName = md5($name . time()) . '.' . $extension;
+
+            //Path
+            $path = Storage::disk('minio_temp')->putFileAs(
+                $folder,
+                $file,
+                $fileName
+            );
+
+            //Registro
+            $digitalFile = DigitalFile::create([
+                'name' => $name,
+                'content_type' => $extension,
+                'size_bytes' =>  $fileSize,
+                'storage_path' => $folder . '/' . $fileName,
+                'user_id' => $user->id
+            ]);
+
+            do {
+                $hash = Str::random(30);
+            } while (DigitalFile::where('hash', $hash)->exists());
+
+            $digitalFile->update([
+                'hash' => $hash
+            ]);
+
+            $url = Storage::disk('minio_temp')->temporaryUrl(
+                $digitalFile->storage_path,
+                now()->addMinutes((int)env('TIME_URL'))
+            );
+
+
+            DB::commit();
+
+            return response()->json([
+                'error' => 0,
+                'message' => 'Registro Creado Correctamente',
+                'data' => [
+                    'path' => $path,
+                    'url' => $url,
+                    'name' => $name,
+                    'hash' => $digitalFile->hash
+                ]
+
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 401);
+        }
+    }
+
     function tracking(Request $request)
     {
         try {

@@ -21,8 +21,6 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('me', [AuthController::class, 'me']);
     Route::post('create', [DigitalFileController::class, 'create'])->name('create');
+    Route::post('create_temp', [DigitalFileController::class, 'createTemp'])->name('createTemp');
     Route::post('tracking', [DigitalFileController::class, 'tracking'])->name('tracking');
-    Route::post('update', [DigitalFileController::class, 'updateEstado'])->name('updateEstado');
-    Route::post('copyFilesNetwork', [DigitalFileController::class, 'copyFilesNetwork'])->name('copyFilesNetwork');
-    Route::post('sihce_download_json', [DigitalFileController::class, 'sihceDownloadJson'])->name('sihce_download_json');
 });
