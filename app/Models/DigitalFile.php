@@ -12,6 +12,7 @@ class DigitalFile extends Model
         'content_type',
         'size_bytes',
         'storage_path',
+        'bucket',
         'hash',
         'user_id'
 
