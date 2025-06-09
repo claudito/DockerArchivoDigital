@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('content_type', 100);
             $table->string('size_bytes', 100);
             $table->string('storage_path', 300);
+            $table->string('bucket', 100);
             $table->string('hash', 100)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

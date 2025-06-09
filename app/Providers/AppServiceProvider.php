@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +15,17 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        try {
+            // Guardar valores de las configuraciones del sitio
+            $sql = "SELECT * FROM site_configurations";
+
+            $configurations = DB::select($sql);
+
+            foreach ($configurations as $config) {
+                Config::set('site.' . $config->name, $config->value);
+            }
+        } catch (\Exception $e) {
+        }
     }
 
     /**

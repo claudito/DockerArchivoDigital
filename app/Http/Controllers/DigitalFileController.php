@@ -27,7 +27,7 @@ class DigitalFileController extends Controller implements HasMiddleware
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(), [
-                'archivo' => 'required|mimes:pdf,xlsx,xls,doc,docx,jpg,jpeg,png,gif,json|max:15360',
+                'archivo' => config('site.validate_api_create'),
                 'folder' => 'required',
             ]);
 
@@ -63,6 +63,7 @@ class DigitalFileController extends Controller implements HasMiddleware
                 'content_type' => $extension,
                 'size_bytes' =>  $fileSize,
                 'storage_path' => $folder . '/' . $fileName,
+                'bucket' => 'sigesa',
                 'user_id' => $user->id
             ]);
 
@@ -105,8 +106,7 @@ class DigitalFileController extends Controller implements HasMiddleware
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(), [
-                //'archivo' => 'required|mimes:pdf,xlsx,xls,doc,docx,jpg,jpeg,png,gif,json|max:15360',
-                'archivo' => 'required|file|max:15360',
+                'archivo' => config('site.validate_api_create_temp'),
                 'folder' => 'required',
             ]);
 
@@ -142,6 +142,7 @@ class DigitalFileController extends Controller implements HasMiddleware
                 'content_type' => $extension,
                 'size_bytes' =>  $fileSize,
                 'storage_path' => $folder . '/' . $fileName,
+                'bucket' => 'temp',
                 'user_id' => $user->id
             ]);
 
