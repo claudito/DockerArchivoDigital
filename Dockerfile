@@ -56,9 +56,9 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/html
 
 # Cachear configuración solo en producción
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+#RUN php artisan config:cache && \
+#    php artisan route:cache && \
+#    php artisan view:cache
 
 # Exponer el puerto HTTP
 EXPOSE 80
