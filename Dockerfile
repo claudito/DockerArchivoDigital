@@ -49,8 +49,8 @@ WORKDIR /var/www/html
 COPY . .
 
 # Instalar dependencias de Laravel e Inertia
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
-    npm install && npm run build
+#RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
+#  npm install && npm run build
 
 # Asignar permisos adecuados
 RUN chown -R www-data:www-data /var/www/html
