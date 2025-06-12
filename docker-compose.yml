@@ -6,6 +6,6 @@ services:
     container_name: archivo_digital_laravel_app
     ports:
       - "8080:80"
-    volumes:
-      - .:/var/www/html
     working_dir: /var/www/html
+    env_file:
+      - .env
