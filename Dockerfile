@@ -49,19 +49,11 @@ WORKDIR /var/www/html
 COPY . .
 
 # Instalar dependencias de Laravel e Inertia
-#RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
-#   npm install && npm run build
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader && \
+    npm install && npm run build
 
 # Asignar permisos adecuados
 RUN chown -R www-data:www-data /var/www/html
 
-# Cachear configuración solo en producción
-#RUN php artisan config:cache && \
-#    php artisan route:cache && \
-#    php artisan view:cache
-
 # Exponer el puerto HTTP
 EXPOSE 80
-
-# Mantener Apache en primer plano para que Docker no termine el contenedor
-CMD ["apache2-foreground"]
