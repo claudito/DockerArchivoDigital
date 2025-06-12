@@ -57,3 +57,6 @@ RUN chown -R www-data:www-data /var/www/html
 
 # Exponer el puerto HTTP
 EXPOSE 80
+
+# Mantener Apache en primer plano para que Docker no termine el contenedor
+CMD ["apache2-foreground"]
